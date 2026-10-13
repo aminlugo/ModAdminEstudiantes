@@ -5,4 +5,4 @@ Este modulo cuenta con dos formas de accederlo:
 1.  A traves de la URL https://modadminestudiantes.onrender.com/
 2.  A través de una aplicacion de escritorio contenida en el folder app_desk la cual debe ser compilada con el comando pyinstaller --noconsole --onefile desktop_app.py
 
-La estructura de carga de CSV de guia la podra dentro del folder other_files
+La estructura de carga de CSV para el proceso de carga masiva la puede encontrar en la carpeta other_files bajo el nombre "Registros_Base_Estudiantes.csv"
