@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Estudiante</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm p-4">
+                    <h2 class="mb-4">Editar Registro: {{ estudiante.numeroIdentificacion }}</h2>
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">Nombres <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="nombres" value="{{ estudiante.nombres }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Apellidos <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="apellidos" value="{{ estudiante.apellidos }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" name="email" value="{{ estudiante.email }}" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Género</label>
+                                <select class="form-select" name="genero">
+                                    <option value="Masculino" {% if estudiante.genero == 'Masculino' %}selected{% endif %}>Masculino</option>
+                                    <option value="Femenino" {% if estudiante.genero == 'Femenino' %}selected{% endif %}>Femenino</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Edad</label>
+                                <input type="number" class="form-control" name="edad" value="{{ estudiante.edad }}">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Carrera</label>
+                            <input type="text" class="form-control" name="carrera" value="{{ estudiante.carrera }}">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Semestre</label>
+                                <input type="number" class="form-control" name="semestre" value="{{ estudiante.semestre }}">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Modalidad</label>
+                                <select class="form-select" name="modalidad">
+                                    <option value="Virtual" {% if estudiante.modalidad == 'Virtual' %}selected{% endif %}>Virtual</option>
+                                    <option value="Presencial" {% if estudiante.modalidad == 'Presencial' %}selected{% endif %}>Presencial</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Universidad</label>
+                                <input type="text" class="form-control" name="universidad" value="{{ estudiante.universidad }}">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                        <a href="/" class="btn btn-secondary">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
