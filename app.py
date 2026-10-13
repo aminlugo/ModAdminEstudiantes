@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 
 # INICIALIZACIÓN DE LA APLICACIÓN FLASK
 app = Flask(__name__)
-app.secret_key = 'clave_secreta_poligran_cloud'
+app.secret_key = '5hT7mK9qP4zX8nL2vF1aS6dJ3rW0yC'
 
 # Inicializar Firebase Admin SDK de forma robusta
 if not firebase_admin._apps:
