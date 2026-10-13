@@ -19,3 +19,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+#comando para compilara app de escritorio: pyinstaller --noconsole --onefile desktop_app.py
