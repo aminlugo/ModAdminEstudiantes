@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Módulo de Administración de Estudiantes - Cloud Firestore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .th-sortable {
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+        }
+        .th-sortable:hover {
+            color: #ffc107;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <h1 class="h3 mb-4 text-center">Módulo de Administración de Estudiantes</h1>
+        
+        <!-- Mensajes Flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <!-- Sección de Carga CSV y Búsqueda -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm p-3">
+                    <h5>Cargar Archivo CSV</h5>
+                    <form action="/cargar_csv" method="POST" enctype="multipart/form-data">
+                        <div class="input-group">
+                            <input type="file" class="form-control" name="archivo_csv" accept=".csv" required>
+                            <button class="btn btn-primary" type="submit">Cargar a Firebase</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm p-3">
+                    <h5>Buscar Registro</h5>
+                    <form action="/" method="GET">
+                        <input type="hidden" name="ordenar" value="{{ ordenar_actual }}">
+                        <input type="hidden" name="dir" value="{{ dir_actual }}">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="busqueda" value="{{ busqueda }}" placeholder="Identificación, nombre, correo o carrera...">
+                            <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                            <a href="/" class="btn btn-outline-dark">Limpiar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de Registros -->
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="card-title m-0">Registros en la Base de Datos</h3>
+                    <div>
+                        <a href="/agregar" class="btn btn-success btn-sm me-2">+ Agregar Nuevo Estudiante</a>
+                        <form action="/eliminar_todos" method="POST" style="display:inline-block;" onsubmit="return confirm('¡ADVERTENCIA! ¿Está completamente seguro de eliminar TODOS los registros de la base de datos?');">
+                            <button type="submit" class="btn btn-danger btn-sm">- Eliminar Todos Los Estudiantes</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>
+                                    <a href="/?ordenar=numeroIdentificacion&dir={{ 'desc' if ordenar_actual == 'numeroIdentificacion' and dir_actual == 'asc' else 'asc' }}&busqueda={{ busqueda }}" class="text-white text-decoration-none th-sortable">
+                                        ID {% if ordenar_actual == 'numeroIdentificacion' %}{{ '▲' if dir_actual == 'asc' else '▼' }}{% endif %}
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="/?ordenar=nombres&dir={{ 'desc' if ordenar_actual == 'nombres' and dir_actual == 'asc' else 'asc' }}&busqueda={{ busqueda }}" class="text-white text-decoration-none th-sortable">
+                                        Nombres {% if ordenar_actual == 'nombres' %}{{ '▲' if dir_actual == 'asc' else '▼' }}{% endif %}
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="/?ordenar=apellidos&dir={{ 'desc' if ordenar_actual == 'apellidos' and dir_actual == 'asc' else 'asc' }}&busqueda={{ busqueda }}" class="text-white text-decoration-none th-sortable">
+                                        Apellidos {% if ordenar_actual == 'apellidos' %}{{ '▲' if dir_actual == 'asc' else '▼' }}{% endif %}
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="/?ordenar=email&dir={{ 'desc' if ordenar_actual == 'email' and dir_actual == 'asc' else 'asc' }}&busqueda={{ busqueda }}" class="text-white text-decoration-none th-sortable">
+                                        Email {% if ordenar_actual == 'email' %}{{ '▲' if dir_actual == 'asc' else '▼' }}{% endif %}
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="/?ordenar=carrera&dir={{ 'desc' if ordenar_actual == 'carrera' and dir_actual == 'asc' else 'asc' }}&busqueda={{ busqueda }}" class="text-white text-decoration-none th-sortable">
+                                        Carrera {% if ordenar_actual == 'carrera' %}{{ '▲' if dir_actual == 'asc' else '▼' }}{% endif %}
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="/?ordenar=semestre&dir={{ 'desc' if ordenar_actual == 'semestre' and dir_actual == 'asc' else 'asc' }}&busqueda={{ busqueda }}" class="text-white text-decoration-none th-sortable">
+                                        Sem. {% if ordenar_actual == 'semestre' %}{{ '▲' if dir_actual == 'asc' else '▼' }}{% endif %}
+                                    </a>
+                                </th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for est in estudiantes %}
+                            <tr>
+                                <td>{{ est.numeroIdentificacion }}</td>
+                                <td>{{ est.nombres }}</td>
+                                <td>{{ est.apellidos }}</td>
+                                <td>{{ est.email }}</td>
+                                <td>{{ est.carrera }}</td>
+                                <td>{{ est.semestre }}</td>
+                                <td>
+                                    <a href="/editar/{{ est.id_doc }}" class="btn btn-sm btn-warning">Editar</a>
+                                    <form action="/eliminar/{{ est.id_doc }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Está seguro de eliminar este registro?');">
+                                        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="7" class="text-center text-muted">No se encontraron registros en la base de datos.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
