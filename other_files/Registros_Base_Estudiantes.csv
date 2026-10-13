@@ -1,8 +1,8 @@
 ﻿email;nombres;apellidos;edad;genero;carrera;modalidad;semestre;numeroIdentificacion;universidad
-aalugo@poligran.edu.co;Amin Alejandro;Lugo Cruz;40;Masculino;Inteligencia Artificial;Virtual;2;1023863;Politécnico Grancolombiano
-rcataneda@@poligran.edu.co;Rodrigo;Castaneda Montenegro;41;Masculino;Inteligencia Artificial;Virtual;3;1023864;Politécnico Grancolombiano
-sjbarrero@poligran.edu.co;Sandra Johanna ;Barrero Trejos;27;Femenino;Educación;Virtual;1;1023865;Politécnico Grancolombiano
-mamoreno@@poligran.edu.co;Miguel Angel;Moreno Barajas;35;Masculino;Ingeniería de Software;Híbrida;4;1023866;Politécnico Grancolombiano
+alugo@poligran.edu.co;Alejandro;Cruz;40;Masculino;Inteligencia Artificial;Virtual;2;1023863;Politécnico Grancolombiano
+rcataneda@poligran.edu.co;Rodrigo;Montenegro;41;Masculino;Inteligencia Artificial;Virtual;3;1023864;Politécnico Grancolombiano
+sjbarrero@poligran.edu.co;Sandra;Trejos;27;Femenino;Educación;Virtual;1;1023865;Politécnico Grancolombiano
+mamoreno@poligran.edu.co;Miguel;Barajas;35;Masculino;Ingeniería de Software;Híbrida;4;1023866;Politécnico Grancolombiano
 sramirez@poligran.edu.co;Sofía;Ramírez;29;Femenino;Psicología Organizacional;Virtual;2;1023867;Politécnico Grancolombiano
 dhernandez@poligran.edu.co;Diego;Hernández;33;Masculino;Finanzas;Presencial;3;1023868;Politécnico Grancolombiano
 vtorres@poligran.edu.co;Valentina;Torres;26;Femenino;Gestión de Proyectos;Híbrida;1;1023869;Politécnico Grancolombiano
