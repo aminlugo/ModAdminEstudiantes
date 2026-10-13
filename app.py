@@ -18,17 +18,17 @@ if not firebase_admin._apps:
 
 db = firestore.client()
 COLECCION = 'estudiantes'
-
 @app.route('/')
 def index():
     busqueda = request.args.get('busqueda', '').strip()
     ordenar_por = request.args.get('ordenar', 'numeroIdentificacion')
     direccion = request.args.get('dir', 'asc')
     
+    lista_estudiantes = []
     try:
-        estudiantes_ref = db.collection(COLECCION)
-        docs = estudiantes_ref.limit(500).stream()
-        lista_estudiantes = []
+        # Usar .get() en lugar de .stream() para descargar los documentos como una lista ligera
+        estudiantes_ref = db.collection(COLECCION).limit(200)
+        docs = estudiantes_ref.get()
         
         for doc in docs:
             data = doc.to_dict()
@@ -36,7 +36,6 @@ def index():
                 data['id_doc'] = doc.id
                 lista_estudiantes.append(data)
     except Exception as e:
-        lista_estudiantes = []
         flash(f'Error al conectar con la base de datos: {str(e)}', 'danger')
         
     # Filtrar localmente si el usuario ingresó un término de búsqueda
