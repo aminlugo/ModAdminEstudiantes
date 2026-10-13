@@ -1,4 +1,5 @@
 import os
+import json
 import tempfile
 from flask import Flask, render_template, request, redirect, url_for, flash
 import firebase_admin
@@ -10,14 +11,24 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.secret_key = 'clave_secreta_poligran_cloud'
 
-# Inicializar Firebase Admin SDK con el archivo JSON de credenciales
-PATH_CREDENCIALES = 'param_bd.json'
+# Inicializar Firebase Admin SDK mediante Variable de Entorno o archivo local
 if not firebase_admin._apps:
-    cred = credentials.Certificate(PATH_CREDENCIALES)
+    firebase_json_env = os.environ.get('FIREBASE_CREDENTIALS_JSON')
+    
+    if firebase_json_env:
+        # Carga el JSON directamente desde la variable de entorno (ideal para producción en Render)
+        cred_dict = json.loads(firebase_json_env)
+        cred = credentials.Certificate(cred_dict)
+    else:
+        # Carga el archivo local si existe (para desarrollo en tu PC)
+        PATH_CREDENCIALES = 'param_bd.json'
+        cred = credentials.Certificate(PATH_CREDENCIALES)
+        
     firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 COLECCION = 'estudiantes'
+
 @app.route('/')
 def index():
     busqueda = request.args.get('busqueda', '').strip()
